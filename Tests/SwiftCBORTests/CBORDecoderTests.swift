@@ -92,7 +92,7 @@ class CBORDecoderTests: XCTestCase {
     }
 
     func testDecodeTagged() {
-        XCTAssertEqual(try! CBORDecoder(input: [0xc0, 0x79, 0x00, 3, 0x41, 0x42, 0x43]).decodeItem(), CBOR.tagged(.standardDateTimeString, "ABC"))
+        XCTAssertEqual(try! CBORDecoder(input: [0xc0, 0x79, 0x00, 3, 0x41, 0x42, 0x43]).decodeItem(), CBOR.utf8String("ABC"))
         XCTAssertEqual(try! CBORDecoder(input: [0xd8, 255, 0x79, 0x00, 3, 0x41, 0x42, 0x43]).decodeItem(), CBOR.tagged(.init(rawValue: 255), "ABC"))
         XCTAssertEqual(try! CBORDecoder(input: [0xdb, 255, 255, 255, 255, 255, 255, 255, 255, 0x79, 0x00, 3, 0x41, 0x42, 0x43]).decodeItem(), CBOR.tagged(.init(rawValue: UInt64.max), "ABC"))
         XCTAssertEqual(try! CBORDecoder(input: [0xdb, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 3, 0xbf, 0x63, 0x6b, 0x65, 0x79, 0xa1, 0x63, 0x6b, 0x65, 0x79, 0x37, 0xff]).decodeItem(), CBOR.tagged(.negativeBignum, ["key" : ["key" : -24]]))
