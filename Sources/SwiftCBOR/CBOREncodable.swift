@@ -24,7 +24,7 @@ extension CBOR: CBOREncodable {
         case let .boolean(b): return b.encode()
         case .null: return CBOR.encodeNull()
         case .undefined: return CBOR.encodeUndefined()
-        case .half(_): return f.encode()
+        case let .half(h): return h.encode()
         case let .float(f): return f.encode()
         case let .double(d): return d.encode()
         case .break: return CBOR.encodeBreak()
