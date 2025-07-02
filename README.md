@@ -1,5 +1,22 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![unlicense](https://img.shields.io/badge/un-license-green.svg?style=flat)](http://unlicense.org)
+[![Forked by Younix](https://img.shields.io/badge/forked%20by-Younix-blue.svg?style=flat)](https://github.com/vuln3r/SwiftCBOR)
+
+## 📢 Disclaimer
+
+> This repository is a **fork** of the original [SwiftCBOR](https://github.com/valpackett/SwiftCBOR) library.  
+> We at **Younix** use and maintain this fork internally to ensure compatibility with **Canonical CBOR** and improved encoding correctness.
+>
+> Key modifications:
+> - Added support for **Canonical CBOR** map encoding via `CBOR.encodeCanonicalMap(_:)`  
+>   → Map keys are now sorted **by their encoded byte representation**, as required by [RFC 7049 §3.9](https://datatracker.ietf.org/doc/html/rfc7049#section-3.9)
+> - Fixed `.half` value encoding  
+>   → `.half(h)` now properly returns `h.encode()` instead of incorrectly returning `.undefined`
+>
+> The library remains API-compatible with the original version.
+>
+> 👉 **Note**: This fork is public primarily for internal use at Younix. External use is welcome but **at your own risk**.
+
 
 # SwiftCBOR
 
@@ -131,6 +148,13 @@ func encodeByteStringStreamStart() -> [UInt8]
 func encodeStreamEnd() -> [UInt8] // Equal to CBOR.encodeBreak()
 func encodeArrayChunk<T: CBOREncodable>(_ chunk: [T]) -> [UInt8]
 func encodeMapChunk<A: CBOREncodable, B: CBOREncodable>(_ map: [A: B]) -> [UInt8]
+```
+### Canonical CBOR Map Example
+
+```swift
+let map: [String: Int] = ["z": 1, "a": 2]
+let encoded = CBOR.encodeCanonicalMap(map)
+// Output will have keys ordered as "a", "z" — based on canonical byte ordering
 ```
 
 ### Note on endian reversal
